@@ -43,3 +43,4 @@ q = np.array([1.5,0 ,0.5,-0.1,1,1.5,0]) # TODO: try changing this!
 arm.safe_move_to_position(q)
 time.sleep(5) #time for screenshots
 arm.close_gripper()
+
