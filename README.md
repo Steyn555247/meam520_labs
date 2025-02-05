@@ -1,5 +1,5 @@
 # MEAM520: Introduction to Robotics
-### Date Modified: 1/6/2025
+### Date Modified: 1/30/2025
 
 Maintainers: Contact 2025 Spring semester TAs
 
@@ -147,7 +147,7 @@ GitHub is an example of a location which stores remote git repositories and acts
 To see that sure your local git repository is setup correctly type the following command:
 ```
 $ cd meam520_ws
-$ git reomte -v
+$ git remote -v
 ```
 
 You should see:
