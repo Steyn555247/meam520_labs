@@ -63,14 +63,18 @@ def show_all_FK(state):
 # TODO: Try testing other configurations!
 
 # The first configuration below matches the dimensional drawing in the handout
-configurations = [
+configurations =np.array([
     np.array([ 0,    0,     0, -pi/2,     0, pi/2, pi/4 ]),
     np.array([ pi/2, 0,  pi/4, -pi/2, -pi/2, pi/2,    0 ]),
     np.array([ 0,    0, -pi/2, -pi/4,  pi/2, pi,   pi/4 ]),
     np.array([ pi/2,    pi/2, -pi/2, -pi/2,  pi/2.5, pi/2,   0 ]),
     np.array([ 0,    -pi/2, pi/2, -pi/4,  pi/2.5, pi/2,   0]),
-    np.array([ pi/2,    0, 0, -pi/1.5, 0, pi/1.5,   0])
-]
+    np.array([ pi/2,    0, 0, -pi/1.5, 0, pi/1.5,   0]),
+    np.array([0, 0, 0, -pi/2, 0, pi/2, pi/4]),  # Neutral Position
+    np.array([0, -pi/2, 0, 0, 0, 0, 0]),              # Fully Stretched Out
+    np.array([pi/2, pi/2, 0, pi/2, 0, pi/2, 0])  # Folded Configuration
+   
+     ])
 
 ####################
 ## Test Execution ##
@@ -78,7 +82,7 @@ configurations = [
 
 if __name__ == "__main__":
 
-    if len(sys.argv) < 1:
+    if len(sys.argv) < 2:
         print("usage:\n\tpython visualize.py FK\n\tpython visualize.py IK")
         exit()
 
