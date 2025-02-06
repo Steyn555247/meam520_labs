@@ -1,5 +1,6 @@
 from lib.calculateFK import FK
 from core.interfaces import ArmController
+import numpy as np
 
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
@@ -22,11 +23,23 @@ limits = [
 #
 # We've included some very basic plotting commands below, but you can find
 # more functionality at https://matplotlib.org/stable/index.html
+num_samples = 10000 #number of samples
+q_samples = np.array([
+    np.random.uniform(joint['lower'], joint['upper'], num_samples) for joint in limits
+]).T
 
-fig = plt.figure()
+end_effector_positions = np.array([fk.forward(q)[1][:3, 3] for q in q_samples])
+
+
+fig = plt.figure(figsize=(8, 8))
 ax = fig.add_subplot(111, projection='3d')
 
 # TODO: update this with real results
-ax.scatter(1,1,1) # plot the point (1,1,1)
+ax.scatter(end_effector_positions[:, 0], end_effector_positions[:, 1], end_effector_positions[:, 2], c='blue', s=1, alpha = 0.5)
+
+ax.set_xlabel("X-axis M")
+ax.set_ylabel("Y-axis M")
+ax.set_zlabel("Z-axis M")
+
 
 plt.show()

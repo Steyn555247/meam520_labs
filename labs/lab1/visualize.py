@@ -67,6 +67,9 @@ configurations = [
     np.array([ 0,    0,     0, -pi/2,     0, pi/2, pi/4 ]),
     np.array([ pi/2, 0,  pi/4, -pi/2, -pi/2, pi/2,    0 ]),
     np.array([ 0,    0, -pi/2, -pi/4,  pi/2, pi,   pi/4 ]),
+    np.array([ pi/2,    pi/2, -pi/2, -pi/2,  pi/2.5, pi/2,   0 ]),
+    np.array([ 0,    -pi/2, pi/2, -pi/4,  pi/2.5, pi/2,   0]),
+    np.array([ pi/2,    0, 0, -pi/1.5, 0, pi/1.5,   0])
 ]
 
 ####################

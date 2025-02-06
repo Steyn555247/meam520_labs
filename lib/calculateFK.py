@@ -1,15 +1,21 @@
 import numpy as np
-from math import pi
+from math import pi, sin, cos
 
 class FK():
+    # def __init__(self):
+    #     # DH Parameters: (theta, d, a, alpha) following Craig's standard DH convention.
+    #     # These values come from the lab handout.
+    #     #format rows as [a, alpha, d, theta]
+        
 
-    def __init__(self):
-
-        # TODO: you may want to define geometric parameters here that will be
-        # useful in computing the forward kinematics. The data you will need
-        # is provided in the lab handout
-
-        pass
+    def dh_transform( self, a, alpha, d, theta):
+        """Return the standard DH transformation matrix given parameters."""
+        return np.array([
+            [cos(theta), -sin(theta)*cos(alpha), sin(theta)*sin(alpha), a*cos(theta)],
+            [sin(theta),  cos(theta)*cos(alpha), -cos(theta)*sin(alpha), a*sin(theta)],
+            [0,           sin(alpha),            cos(alpha),            d],
+            [0,           0,                     0,                     1]
+        ])
 
     def forward(self, q):
         """
@@ -26,9 +32,41 @@ class FK():
         """
 
         # Your Lab 1 code starts here
+    # dh paramaters (a, alpha, d, theta)
+        endDHparameters = np.array([
+            [0,      -pi/2,   0.333,     q[0]],          # Joint 1
+            [0,      pi/2,     0.0,    q[1]],       # Joint 2
+            [0.0825, pi/2,   0.3160,    q[2]],        # Joint 3
+            [-0.0825, -pi/2, 0,  q[3]],        # Joint 4
+            [0,      pi/2,  0.384, q[4]],        # Joint 5
+            [0.088,   pi/2,     0.0,     q[5]],        # Joint 6
+            [0,      0.0,     0.21,   q[6]-(pi/4)]       # Joint 7
+        ])
 
-        jointPositions = np.zeros((8,3))
+        jointspcDHparameters=np.array([
+            [0, 0, 0.141, q[0]],
+            [0, 0, 0, q[1]],
+            [0, 0, 0.195, q[2]],
+            [0, 0, 0, q[3]],
+            [0, 0, 0.125, q[4]],
+            [0, 0, 0.015, q[5]],
+            [0, 0, 0.051, q[6]]
+        ])
+       
+        jointPositions = np.zeros((8, 3))
         T0e = np.identity(4)
+
+        for i in range(7):
+            modtransform= self.dh_transform(*jointspcDHparameters[i])
+            maintransform = self.dh_transform(*endDHparameters[i])
+            Tmod = T0e @ modtransform
+            jointPositions[i] = Tmod[:3, 3].tolist()
+            T0e = T0e @ maintransform
+
+            jointPositions[7] = T0e[:3, 3].tolist()
+
+        
+
 
         # Your code ends here
 
@@ -71,8 +109,9 @@ if __name__ == "__main__":
 
     # matches figure in the handout
     q = np.array([0,0,0,-pi/2,0,pi/2,pi/4])
-
+# q = np.array([0, 0, 0, 0, 0, 0, 0])
     joint_positions, T0e = fk.forward(q)
     
     print("Joint Positions:\n",joint_positions)
     print("End Effector Pose:\n",T0e)
+
