@@ -1,3 +1,6 @@
+#for this overal assignment I worked together with Matt Rabin. Together we constructed the frames and thought about the assignment and discussed how we were tackling the project
+#all code written in this assignment is however my full work. We were just working collaborating on solving
+
 import numpy as np
 from math import pi, sin, cos
 
@@ -8,7 +11,7 @@ class FK():
     #     #format rows as [a, alpha, d, theta]
         
 
-    def dh_transform( self, a, alpha, d, theta):
+    def dh_transform( self, a, alpha, d, theta): # Function for the standard DH transformation matrix so that it can be called easily
         """Return the standard DH transformation matrix given parameters."""
         return np.array([
             [cos(theta), -sin(theta)*cos(alpha), sin(theta)*sin(alpha), a*cos(theta)],
@@ -37,14 +40,14 @@ class FK():
             [0,      -pi/2,   0.333,     q[0]],          # Joint 1
             [0,      pi/2,     0.0,    q[1]],       # Joint 2
             [0.0825, pi/2,   0.3160,    q[2]],        # Joint 3
-            [-0.0825, -pi/2, 0,  q[3]],        # Joint 4
+            [-0.08250, -pi/2, 0,  q[3]],        # Joint 4
             [0,      pi/2,  0.384, q[4]],        # Joint 5
             [0.088,   pi/2,     0.0,     q[5]],        # Joint 6
             [0,      0.0,     0.21,   q[6]-(pi/4)]       # Joint 7
         ])
 
-        jointspcDHparameters=np.array([
-            [0, 0, 0.141, q[0]],
+        jointspcDHparameters=np.array([ #specific parameters to adjust for distance between joint and frame
+            [0, 0, 0.141, q[0]], 
             [0, 0, 0, q[1]],
             [0, 0, 0.195, q[2]],
             [0, 0, 0, q[3]],
@@ -53,17 +56,17 @@ class FK():
             [0, 0, 0.051, q[6]]
         ])
        
-        jointPositions = np.zeros((8, 3))
-        T0e = np.identity(4)
+        jointPositions = np.zeros((8, 3)) # start 8x3 zero matrix to store joints and end effector positions
+        T0e = np.identity(4) # identity matrix start as base frame
 
-        for i in range(7):
-            modtransform= self.dh_transform(*jointspcDHparameters[i])
-            maintransform = self.dh_transform(*endDHparameters[i])
-            Tmod = T0e @ modtransform
-            jointPositions[i] = Tmod[:3, 3].tolist()
-            T0e = T0e @ maintransform
+        for i in range(7): #for loop through the 7 joints
+            modtransform= self.dh_transform(*jointspcDHparameters[i]) #modification the transform of the additional DH parameters to adjust the frame to the actual joint center and standard transform Function
+            maintransform = self.dh_transform(*endDHparameters[i]) #compute main transform for joint using primary DH param and standard transform function
+            Tmod = T0e @ modtransform #multiply current T0e with modification transform to get current joint's center
+            jointPositions[i] = Tmod[:3, 3].tolist() #add the Tmod value of the joints to the 3x3 matrix
+            T0e = T0e @ maintransform # set T0e to the main transformation
 
-            jointPositions[7] = T0e[:3, 3].tolist()
+            jointPositions[7] = T0e[:3, 3].tolist() #add transformation to the 3x3 matrix
 
         
 
@@ -109,9 +112,8 @@ if __name__ == "__main__":
 
     # matches figure in the handout
     q = np.array([0,0,0,-pi/2,0,pi/2,pi/4])
-# q = np.array([0, 0, 0, 0, 0, 0, 0])
+# q = np.array([0, 0, 0, 0, 0, 0, 0]) # try out 0 position
     joint_positions, T0e = fk.forward(q)
     
     print("Joint Positions:\n",joint_positions)
     print("End Effector Pose:\n",T0e)
-
