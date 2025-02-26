@@ -35,10 +35,10 @@ class FK():
         """
 
         # Your Lab 1 code starts here
-    # dh paramaters (a, alpha, d, theta)
+        # dh paramaters (a, alpha, d, theta)
         endDHparameters = np.array([
             [0,      -pi/2,   0.333,     q[0]],          # Joint 1
-            [0,      pi/2,     0.0,    q[1]],       # Joint 2
+            [0,      pi/2,     0,    q[1]],       # Joint 2
             [0.0825, pi/2,   0.3160,    q[2]],        # Joint 3
             [-0.08250, -pi/2, 0,  q[3]],        # Joint 4
             [0,      pi/2,  0.384, q[4]],        # Joint 5
@@ -75,10 +75,47 @@ class FK():
 
         return jointPositions, T0e
 
-    # feel free to define additional helper methods to modularize your solution for lab 1
+        # feel free to define additional helper methods to modularize your solution for lab 1
 
-    
-    # This code is for Lab 2, you can ignore it ofr Lab 1
+    def get_dh_parameters(self, q):
+        """
+        New function to directly return the DH parameters for the given configuration q.
+        This function allows other parts of the code (e.g., Jacobian computation) to use the same DH parameters
+        without having to duplicate the definitions here.
+        
+        INPUT:
+        q - 1x7 vector of joint angles [q0, q1, q2, q3, q4, q5, q6]
+        
+        OUTPUT:
+        Returns a tuple containing:
+         - endDHparameters: The main DH parameter array.
+         - jointspcDHparameters: The joint-specific DH parameter array.
+        """
+        # Construct the main DH parameters array exactly as in the forward function.
+        endDHparameters = np.array([
+            [0,      -pi/2,   0.333,     q[0]],          # Joint 1
+            [0,       pi/2,     0,        q[1]],          # Joint 2
+            [0.0825,  pi/2,   0.3160,    q[2]],          # Joint 3
+            [-0.08250, -pi/2,  0,        q[3]],          # Joint 4
+            [0,       pi/2,   0.384,     q[4]],          # Joint 5
+            [0.088,   pi/2,    0.0,      q[5]],          # Joint 6
+            [0,       0.0,    0.21,      q[6] - (pi/4)]  # Joint 7 (with offset)
+        ])
+
+        # Construct the joint-specific DH parameters array exactly as in the forward function.
+        jointspcDHparameters = np.array([
+            [0, 0, 0.141, q[0]], 
+            [0, 0, 0,       q[1]],
+            [0, 0, 0.195,   q[2]],
+            [0, 0, 0,       q[3]],
+            [0, 0, 0.125,   q[4]],
+            [0, 0, -0.015,  q[5]],
+            [0, 0, 0.051,   q[6]]
+        ])
+
+        # Return both arrays so they can be used elsewhere.
+        return endDHparameters, jointspcDHparameters
+
     def get_axis_of_rotation(self, q):
         """
         INPUT:
@@ -90,7 +127,8 @@ class FK():
 
         """
         # STUDENT CODE HERE: This is a function needed by lab 2
-
+        z_axes = [] # to store Z-axis (rotation axis) for each joint based in world frame
+        
         return()
     
     def compute_Ai(self, q):
@@ -111,8 +149,14 @@ if __name__ == "__main__":
     fk = FK()
 
     # matches figure in the handout
-    q = np.array([0,0,0,-pi/2,0,pi/2,pi/4])
-# q = np.array([0, 0, 0, 0, 0, 0, 0]) # try out 0 position
+   
+    # q = np.array([ pi/2, 0,  pi/4, -pi/2, -pi/2, pi/2,    0 ]) # config 1 
+    # q = np.array([ 0,    0, -pi/2, -pi/4,  pi/2, pi,   pi/4 ]) # config 2
+    # q = np.array([pi/2, pi/2, 0, pi/2, 0, pi/2, 0])  # Folded Configuration  (config 3) look at joint 1 and see if there might be something wrong in DH?
+
+    
+     # q = np.array([0,0,0,-pi/2,0,pi/2,pi/4])
+    q = np.array([0, 0, 0, 0, 0, 0, 0]) # try out 0 position
     joint_positions, T0e = fk.forward(q)
     
     print("Joint Positions:\n",joint_positions)

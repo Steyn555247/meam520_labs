@@ -1,3 +1,6 @@
+#for this overal assignment I worked together with Matt Rabin. Together we constructed the frames and thought about the assignment and discussed how we were tackling the project
+#all code written in this assignment is however my full work. We were just working collaborating on solving
+
 import sys
 from math import pi
 import numpy as np
@@ -67,11 +70,11 @@ configurations =np.array([
     np.array([ 0,    0,     0, -pi/2,     0, pi/2, pi/4 ]),
     np.array([ pi/2, 0,  pi/4, -pi/2, -pi/2, pi/2,    0 ]),
     np.array([ 0,    0, -pi/2, -pi/4,  pi/2, pi,   pi/4 ]),
-    np.array([ pi/2,    pi/2, -pi/2, -pi/2,  pi/2.5, pi/2,   0 ]),
-    np.array([ 0,    -pi/2, pi/2, -pi/4,  pi/2.5, pi/2,   0]),
-    np.array([ pi/2,    0, 0, -pi/1.5, 0, pi/1.5,   0]),
-    np.array([0, 0, 0, -pi/2, 0, pi/2, pi/4]),  # Neutral Position
-    np.array([0, -pi/2, 0, 0, 0, 0, 0]),              # Fully Stretched Out
+    # np.array([ pi/2,    pi/2, -pi/2, -pi/2,  pi/2.5, pi/2,   0 ]),
+    # np.array([ 0,    -pi/2, pi/2, -pi/4,  pi/2.5, pi/2,   0]),
+    # np.array([ pi/2,    0, 0, -pi/1.5, 0, pi/1.5,   0]),
+    # np.array([0, 0, 0, -pi/2, 0, pi/2, pi/4]),  # Neutral Position
+    # np.array([0, -pi/2, 0, 0, 0, 0, 0]),              # Fully Stretched Out
     np.array([pi/2, pi/2, 0, pi/2, 0, pi/2, 0])  # Folded Configuration
    
      ])

@@ -1,5 +1,9 @@
 import numpy as np 
 from lib.calcJacobian import calcJacobian
+import rospy
+from sensor_msgs.msg import JointState
+
+
 
 def FK_velocity(q_in, dq):
     """
@@ -11,7 +15,14 @@ def FK_velocity(q_in, dq):
 
     ## STUDENT CODE GOES HERE
 
+    #compute jacobian
+
     velocity = np.zeros((6, 1))
+    J=calcJacobian(q_in)
+
+
+    velocity = J@dq # matrix multiply the jacobian with the joint speed
+   
 
 
     return velocity

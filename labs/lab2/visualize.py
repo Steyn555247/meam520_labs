@@ -67,7 +67,6 @@ def show_all_velocity(q,i):
     quat = tf.transformations.quaternion_conjugate(rot)
     velocity[0:3] = qv_mult(quat,velocity[0:3])
     velocity[3:6] = qv_mult(quat,velocity[3:6])
-    print("Transformed velocity (in end-effector frame):", velocity)
 
     show_end_effector_velocity(velocity)
     show_joint_velocity(qdot,i)
@@ -80,12 +79,9 @@ def show_all_velocity(q,i):
 
 # The first configuration below matches the dimensional drawing in the handout
 configurations = [
-    
     np.array([ 0,    0,     0, -pi/2,     0, pi/2, pi/4 ]),
-    np.array([0,  0,  0, -pi/2, 0, pi/4, 0]),  #test config
     np.array([ pi/2, 0,  pi/4, -pi/2, -pi/2, pi/2,    0 ]),
     np.array([ 0,    0, -pi/2, -pi/4,  pi/2, pi,   pi/4 ]),
-
 ]
 
 ####################
