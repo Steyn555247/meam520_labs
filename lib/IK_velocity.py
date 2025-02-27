@@ -24,27 +24,38 @@ def IK_velocity(q_in, v_in, omega_in):
 
     ## STUDENT CODE GOES HERE
     J=calcJacobian(q_in)
-    def solution_exists(J, xi, tol=1e-6):
-        rank_J = np.linalg.matrix_rank(J, tol=tol) #compute rank of Jacobian to test J|xi to later
 
-        augmented_matrix = np.hstack((J, xi)) #construct the J, Xi matrick
-        rank_augmented = np.linalg.matrix_rank (augmented_matrix, tol=tol) # rank the matrix of J|xi
-
-        return rank_J == rank_augmented # check if the ranks are equal
+    valid = ~np.isnan(xi[:, 0])
+    if np.sum(valid) == 0:
+        return dq
     
-    if solution_exists(J, xi):
-        print("solution exists, computing exact inverse")
-        J_inverse = np.linalg.pinv(J)
-        dq = J_inverse @ xi
+    J_valid = J[valid, :]
+    xi_valid = xi[valid, :]
+
+    dq = np.linalg.pinv(J_valid) @ xi_valid
+
+    return dq
+#     def solution_exists(J, xi, tol=1e-6):
+#         rank_J = np.linalg.matrix_rank(J, tol=tol) #compute rank of Jacobian to test J|xi to later
+
+#         augmented_matrix = np.hstack((J, xi)) #construct the J, Xi matrick
+#         rank_augmented = np.linalg.matrix_rank (augmented_matrix, tol=tol) # rank the matrix of J|xi
+
+#         return rank_J == rank_augmented # check if the ranks are equal
+    
+#     if solution_exists(J, xi):
+#         print("solution exists, computing exact inverse")
+#         J_inverse = np.linalg.pinv(J)
+#         dq = J_inverse @ xi
 
     
-    else: 
-         print("no exact solution exists, finding least square error")
-         dq, residuals, rank, singular_values = np.linalg.lstsq(J, xi, rcond=None)
-         print(f"Least squares solution: {dq}")
-         print(f"Residual error: {residuals}")
-         print(f"Rank of J: {rank}")
-         print(f"Singular values: {singular_values}")
+#     else: 
+#          print("no exact solution exists, finding least square error")
+#          dq, residuals, rank, singular_values = np.linalg.lstsq(J, xi, rcond=None)
+#          print(f"Least squares solution: {dq}")
+#          print(f"Residual error: {residuals}")
+#          print(f"Rank of J: {rank}")
+#          print(f"Singular values: {singular_values}")
        
    
-    return dq
+#     return dq
