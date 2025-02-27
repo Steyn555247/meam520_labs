@@ -20,7 +20,7 @@ def IK_velocity(q_in, v_in, omega_in):
 
     v_in = v_in.reshape((3,1))
     omega_in = omega_in.reshape((3,1))
-    xi = np.vstack((omega_in, v_in)) # to store xi values from v_in and omega_in
+    xi = np.vstack((v_in, omega_in)) # to store xi values from v_in and omega_in
 
     ## STUDENT CODE GOES HERE
     J=calcJacobian(q_in)
