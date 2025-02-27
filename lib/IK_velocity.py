@@ -23,7 +23,7 @@ def IK_velocity(q_in, v_in, omega_in):
     xi = np.vstack((omega_in, v_in)) # to store xi values from v_in and omega_in
 
     ## STUDENT CODE GOES HERE
-    J=calcJacobian()
+    J=calcJacobian(q_in)
     def solution_exists(J, xi, tol=1e-6):
         rank_J = np.linalg.matrix_rank(J, tol=tol) #compute rank of Jacobian to test J|xi to later
 
