@@ -24,5 +24,5 @@ def calcAngDiff(R_des, R_curr):
     R_diff = np.dot(R_des, R_curr.T) # compute the rotation difference matrix that rotates current rotation to R_des
 
     skew = (R_diff - R_diff.T)/2 # compute the skew matrix of R_diff
-    omega = np.array(skew[2, 1], skew[0, 2], skew[1, 0])
+    omega = np.array([skew[2, 1], skew[0, 2], skew[1, 0]])
     return omega
