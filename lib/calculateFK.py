@@ -128,14 +128,18 @@ class FK():
         """
         # STUDENT CODE HERE: This is a function needed by lab 2
         z_axes = [] # to store Z-axis (rotation axis) for each joint based in world frame
-        endDHparameters, _ = self.get_dh_parameters(q)
+        endDHparameters, jointspcDHparameters = self.get_dh_parameters(q)
         z_axes = np.zeros((3, 7))
         T_current = np.identity(4)
         for i in range(7):
             # The z-axis of the current frame is the third column of T_current.
             z_axes[:, i] = T_current[:3, 2]
+            mod_transform = self.dh_transform(*jointspcDHparameters[i])
+            T_joint = T_current @ mod_transform
+
             main_transform = self.dh_transform(*endDHparameters[i])
             T_current = T_current @ main_transform
+
         return z_axes
     
     def compute_Ai(self, q):
