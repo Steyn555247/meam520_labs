@@ -87,7 +87,7 @@ class JacobianDemo():
 
         return Rdes, ang_vdes, xdes, vdes
 
-    def ellipse(t,f=0.5,ry=.15,rz=.10):
+    def ellipse(t,f=0.15,ry=.28,rz=.25):
         """
         Calculate the position and velocity of the figure ellipse trajector
 
@@ -109,15 +109,31 @@ class JacobianDemo():
         ## STUDENT CODE GOES HERE
 
         # TODO: replace these!
-        xdes = JacobianDemo.x0
-        vdes = np.array([0,0,0])
-        Rdes = np.diag([1., -1., -1.])
-        ang_vdes = 0.0 * np.array([1.0, 0.0, 0.0])
+        # xdes = JacobianDemo.x0
+        # vdes = np.array([0,0,0])
+        # Rdes = np.diag([1., -1., -1.])
+        # ang_vdes = 0.0 * np.array([1.0, 0.0, 0.0])
+
+
+        #desired position elipse
+        x= x0[0]
+        y = x0[1]+ry*np.cos(f*t)
+        z = x0[2] +rz * np.sin(f*t)
+        xdes= np.array([x,y,z])
+
+        #compute velocity of it with the x componant being constant
+        vdes = np.array([0.0, -ry * f * np.sin(f * t), rz * f * np.cos(f * t)])
+
+
+
+        Rdes = np.diag([0.5, 0.5, -1.0])
+
+        ang_vdes = np.zeros(3)
         ## END STUDENT CODE
         
         return Rdes, ang_vdes, xdes, vdes
 
-    def line(t,f=1.0,L=.15):
+    def line(t,f=0.01,L=.35):
         """
         Calculate the position and velocity of the line trajector
 
@@ -135,17 +151,19 @@ class JacobianDemo():
         ## STUDENT CODE GOES HERE
         x0 = np.array([0.307,0,0.487]) #corresponds to neutral position
         # TODO: replace these!
-        xdes = JacobianDemo.x0
-        vdes = np.array([0,0,0])
+        # xdes = JacobianDemo.x0
+        # vdes = np.array([0,0,0])
 
+        xdes = x0 + np.array([0.0, 0.0, L * np.sin(2 * np.pi * f * t)])
+        vdes = np.array([0.0, 0.0, L * 2 * np.pi * f * np.cos(2 * np.pi * f * t)])
         # Example for generating an orientation trajectory
         # The end effector will rotate around the x-axis during the line motion
         # following the changing ang
-        ang = -np.pi + (np.pi/4.0) * sin(f*t)
+        ang = -np.pi + (np.pi/4.0) * sin(2 * np.pi * f*t)
         r = ang * np.array([1.0, 0.0, 0.0])
         Rdes = rotvec_to_matrix(r)
 
-        ang_v = (np.pi/4.0) * f * cos(f*t)
+        ang_v = (np.pi/4.0) * f * cos(2 * np.pi * f*t)
         ang_vdes = ang_v * np.array([1.0, 0.0, 0.0])
 
         ## END STUDENT CODE
