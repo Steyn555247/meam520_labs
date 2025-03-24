@@ -19,5 +19,16 @@ def calcManipulability(q_in):
 
     ## STUDENT CODE STARTS HERE for the mu index, Hint: np.linalg.svd
     mu = 0.0
+    JJT= J @ J.T
+
+    det_JJT = np.linalg.det(JJT)
+
+
+    if det_JJT> 0:
+            mu = np.sqrt(det_JJT)
+    else:
+          mu = 0  
+
+    
 
     return mu, M

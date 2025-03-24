@@ -16,23 +16,23 @@ def IK_velocity(q_in, v_in, omega_in):
          and omega_in have multiple solutions, then you should select the solution
          that minimizes the l2 norm of dq
     """
-    dq = np.zeros((1, 7))
+    dq = np.zeros((1, 7)) #initialie zero vec
 
-    v_in = v_in.reshape((3,1))
-    omega_in = omega_in.reshape((3,1))
+    v_in = v_in.reshape((3,1)) # reshape the linear velocity matrix
+    omega_in = omega_in.reshape((3,1)) #reshape omage velocity
     xi = np.vstack((v_in, omega_in)) # to store xi values from v_in and omega_in
 
     ## STUDENT CODE GOES HERE
-    J=calcJacobian(q_in)
+    J=calcJacobian(q_in) #take jacobian from previous file
 
-    valid = ~np.isnan(xi[:, 0])
+    valid = ~np.isnan(xi[:, 0]) # filter out the NaN values here
     if np.sum(valid) == 0:
         return dq
     
-    J_valid = J[valid, :]
-    xi_valid = xi[valid, :]
+    J_valid = J[valid, :] # create a subset of J with non NaN values
+    xi_valid = xi[valid, :] #same for xi
 
-    dq = np.linalg.pinv(J_valid) @ xi_valid
+    dq = np.linalg.pinv(J_valid) @ xi_valid #compute Dq with multiplying the inv of J_valid with xi_valid
 
     return dq
 #     def solution_exists(J, xi, tol=1e-6):

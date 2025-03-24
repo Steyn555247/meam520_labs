@@ -17,8 +17,8 @@ def FK_velocity(q_in, dq):
 
     #compute jacobian
 
-    velocity = np.zeros((6, 1))
-    J=calcJacobian(q_in)
+    velocity = np.zeros((6, 1)) #make velocity 6x1 valoecity vector
+    J=calcJacobian(q_in) #get jacobian
 
 
     velocity = J@dq # matrix multiply the jacobian with the joint speed

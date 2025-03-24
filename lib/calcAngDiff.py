@@ -21,8 +21,14 @@ def calcAngDiff(R_des, R_curr):
     """
     omega = np.zeros(3)
     ## STUDENT CODE STARTS HERE
-    R_diff = np.dot(R_des, R_curr.T) # compute the rotation difference matrix that rotates current rotation to R_des
+    R_diff = R_curr.T @ R_des # compute the rotation difference matrix that rotates current rotation to R_des
+    # trace = np.trace(R_diff) #checks sum of diagonals
+
+    # if np.isclose(trace, 3.0): # if it is close to 3 (aka identity -> zero rotation)
+    #     return np.zeros(3) # return 0
 
     skew = (R_diff - R_diff.T)/2 # compute the skew matrix of R_diff
-    omega = np.array([skew[2, 1], skew[0, 2], skew[1, 0]])
+    omega_part = np.array([skew[2, 1], skew[0, 2], skew[1, 0]])
+    omega = R_curr @ omega_part
+    
     return omega
