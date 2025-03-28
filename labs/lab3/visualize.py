@@ -142,10 +142,10 @@ def transform(d,rpy):
 # to generate your own tests, or directly write out transforms you wish to test.
 
 targets = [
-    transform( np.array([-.2, -.3, .5]), np.array([0,pi,pi])            ),
-    transform( np.array([-.2, .3, .5]),  np.array([pi/6,5/6*pi,7/6*pi]) ),
-    transform( np.array([.5, 0, .5]),    np.array([0,pi,pi])            ),
-    transform( np.array([.7, 0, .5]),    np.array([0,pi,pi])            ),
+    transform( np.array([-.5, -.1, .2]), np.array([0,pi/3,pi])            ),
+    transform( np.array([.2, -.3, .6]),  np.array([pi/6,5/6*pi,7/6*pi]) ),
+    transform( np.array([.3, .3, .3]),    np.array([0,pi,pi])            ),
+    transform( np.array([.3, -.3, .3]),    np.array([0,pi,pi])            ),
     transform( np.array([.2, .6, 0.5]),  np.array([0,pi,pi])            ),
     transform( np.array([.2, .6, 0.5]),  np.array([0,pi,pi-pi/2])       ),
     transform( np.array([.2, -.6, 0.5]), np.array([0,pi-pi/2,pi])       ),

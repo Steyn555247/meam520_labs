@@ -59,7 +59,7 @@ class JacobianDemo():
     ## TRAJECTORIES ##
     ##################
 
-    def eight(t,fx=0.5,fy=1.0,rx=.15,ry=.1):
+    def eight(t,fx=0.3,fy=0.5,rx=.12,ry=.14):
         """
         Calculate the position and velocity of the figure 8 trajector
 
@@ -83,7 +83,7 @@ class JacobianDemo():
         vdes = np.array([rx*fx*cos(fx*t),ry*fy*cos(fy*t),0])
 
         # TODO: replace these!
-        Rdes = np.diag([1., -1., -1.])
+        Rdes = np.diag([.7, -1., -1.])
         ang_vdes = 0.0 * np.array([1.0, 0.0, 0.0])
 
         return Rdes, ang_vdes, xdes, vdes
@@ -198,7 +198,7 @@ class JacobianDemo():
     #     ## END STUDENT CODE
     #     return Rdes, ang_vdes, xdes, vdes
 
-    def line(t,f=0.01,L=.35):
+    def line(t,f=0.05,L=.35):
         """
         Calculate the position and velocity of the line trajector
 
@@ -270,11 +270,11 @@ class JacobianDemo():
                 curr_x = np.copy(x.flatten())
 
                 # First Order Integrator, Proportional Control with Feed Forward
-                kp = 5.0
+                kp = 0.15
                 v = vdes + kp * (xdes - curr_x)
                 
                 # Rotation
-                kr = 5.0
+                kr = 0.3
                 omega = ang_vdes + kr * calcAngDiff(Rdes, R).flatten()
 
 
@@ -282,7 +282,7 @@ class JacobianDemo():
                 lower = np.array([-2.8973, -1.7628, -2.8973, -3.0718, -2.8973, -0.0175, -2.8973])
                 upper = np.array([2.8973, 1.7628, 2.8973, -0.0698, 2.8973, 3.7525, 2.8973])
                 q_e = lower + (upper - lower) / 2
-                k0 = 5
+                k0 = 1
 
                 # Velocity Inverse Kinematics
                 dq = IK_velocity_null(q,v, omega, - k0 * (q - q_e)).flatten()
