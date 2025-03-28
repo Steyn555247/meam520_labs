@@ -21,7 +21,7 @@ rospy.init_node("visualizer")
 ik = IK()
 
 # Turn on/off Manipulability Ellipsoid
-visulaize_mani_ellipsoid = False
+visulaize_mani_ellipsoid = True
 
 #########################
 ##  RViz Communication ##

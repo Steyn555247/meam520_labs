@@ -88,7 +88,37 @@ class JacobianDemo():
 
         return Rdes, ang_vdes, xdes, vdes
 
-    def ellipse(t,f=0.5,ry=.15,rz=.10):
+    # def ellipse(t,f=0.5,ry=.15,rz=.10):
+    #     """
+    #     Calculate the position and velocity of the figure ellipse trajector
+
+    #     Inputs:
+    #     t - time in sec since start
+    #     f - frequecny in rad/s of the trajectory
+    #     rx - radius in m of the x portion
+    #     ry - radius in m of the y portion
+
+    #     Outputs:
+    #     xdes = 0x3 np array of target end effector position in the world frame
+    #     vdes = 0x3 np array of target end effector linear velocity in the world frame
+    #     Rdes = 3x3 np array of target end effector orientation in the world frame
+    #     ang_vdes = 0x3 np array of target end effector orientation velocity in the rotation vector representation in the world frame
+    #     """
+
+    #     x0 = np.array([0.307, 0, 0.487]) # corresponds to neutral position
+
+    #     ## STUDENT CODE GOES HERE
+
+    #     # TODO: replace these!
+    #     xdes = JacobianDemo.x0
+    #     vdes = np.array([0,0,0])
+    #     Rdes = np.diag([1., -1., -1.])
+    #     ang_vdes = 0.0 * np.array([1.0, 0.0, 0.0])
+    #     ## END STUDENT CODE
+        
+    #     return Rdes, ang_vdes, xdes, vdes
+    
+    def ellipse(t,f=0.05,ry=.28,rz=.25):
         """
         Calculate the position and velocity of the figure ellipse trajector
 
@@ -110,15 +140,65 @@ class JacobianDemo():
         ## STUDENT CODE GOES HERE
 
         # TODO: replace these!
-        xdes = JacobianDemo.x0
-        vdes = np.array([0,0,0])
-        Rdes = np.diag([1., -1., -1.])
-        ang_vdes = 0.0 * np.array([1.0, 0.0, 0.0])
+        # xdes = JacobianDemo.x0
+        # vdes = np.array([0,0,0])
+        # Rdes = np.diag([1., -1., -1.])
+        # ang_vdes = 0.0 * np.array([1.0, 0.0, 0.0])
+
+
+        #desired position elipse
+        x= x0[0]
+        y = x0[1]+ry*np.cos(f*t)
+        z = x0[2] +rz * np.sin(f*t)
+        xdes= np.array([x,y,z])
+
+        #compute velocity of it with the x componant being constant
+        vdes = np.array([0.0, -ry * f * np.sin(f * t), rz * f * np.cos(f * t)])
+
+
+
+        Rdes = np.diag([0.5, 0.5, -1.0])
+
+        ang_vdes = np.zeros(3)
         ## END STUDENT CODE
         
         return Rdes, ang_vdes, xdes, vdes
 
-    def line(t,f=1.0,L=.15):
+    # def line(t,f=1.0,L=.15):
+    #     """
+    #     Calculate the position and velocity of the line trajector
+
+    #     Inputs:
+    #     t - time in sec since start
+    #     f - frequecny in Hz of the line trajectory
+    #     L - length of the line in meters
+
+    #     Outputs:
+    #     xdes = 0x3 np array of target end effector position in the world frame
+    #     vdes = 0x3 np array of target end effector linear velocity in the world frame
+    #     Rdes = 3x3 np array of target end effector orientation in the world frame
+    #     ang_vdes = 0x3 np array of target end effector orientation velocity in the rotation vector representation in the world frame
+    #     """
+    #     ## STUDENT CODE GOES HERE
+    #     x0 = np.array([0.307,0,0.487]) #corresponds to neutral position
+    #     # TODO: replace these!
+    #     xdes = JacobianDemo.x0
+    #     vdes = np.array([0,0,0])
+
+    #     # Example for generating an orientation trajectory
+    #     # The end effector will rotate around the x-axis during the line motion
+    #     # following the changing ang
+    #     ang = -np.pi + (np.pi/4.0) * sin(f*t)
+    #     r = ang * np.array([1.0, 0.0, 0.0])
+    #     Rdes = rotvec_to_matrix(r)
+
+    #     ang_v = (np.pi/4.0) * f * cos(f*t)
+    #     ang_vdes = ang_v * np.array([1.0, 0.0, 0.0])
+
+    #     ## END STUDENT CODE
+    #     return Rdes, ang_vdes, xdes, vdes
+
+    def line(t,f=0.01,L=.35):
         """
         Calculate the position and velocity of the line trajector
 
@@ -136,17 +216,17 @@ class JacobianDemo():
         ## STUDENT CODE GOES HERE
         x0 = np.array([0.307,0,0.487]) #corresponds to neutral position
         # TODO: replace these!
-        xdes = JacobianDemo.x0
-        vdes = np.array([0,0,0])
+        # xdes = JacobianDemo.x0
+        # vdes = np.array([0,0,0])
 
-        # Example for generating an orientation trajectory
-        # The end effector will rotate around the x-axis during the line motion
-        # following the changing ang
-        ang = -np.pi + (np.pi/4.0) * sin(f*t)
+        xdes = x0 + np.array([0.0, 0.0, L * np.sin(2 * np.pi * f * t)])
+        vdes = np.array([0.0, 0.0, L * 2 * np.pi * f * np.cos(2 * np.pi * f * t)])
+        
+        ang = -np.pi + (np.pi/4.0) * sin(2 * np.pi * f*t)
         r = ang * np.array([1.0, 0.0, 0.0])
         Rdes = rotvec_to_matrix(r)
 
-        ang_v = (np.pi/4.0) * f * cos(f*t)
+        ang_v = (np.pi/4.0) * f * cos(2 * np.pi * f*t)
         ang_vdes = ang_v * np.array([1.0, 0.0, 0.0])
 
         ## END STUDENT CODE
@@ -202,7 +282,7 @@ class JacobianDemo():
                 lower = np.array([-2.8973, -1.7628, -2.8973, -3.0718, -2.8973, -0.0175, -2.8973])
                 upper = np.array([2.8973, 1.7628, 2.8973, -0.0698, 2.8973, 3.7525, 2.8973])
                 q_e = lower + (upper - lower) / 2
-                k0 = 1.0
+                k0 = 5
 
                 # Velocity Inverse Kinematics
                 dq = IK_velocity_null(q,v, omega, - k0 * (q - q_e)).flatten()
